@@ -1,28 +1,49 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="container">
+    <app-progress-bar :quoteCount="quotes.length" :maxQuotes="maxQuotes"></app-progress-bar>
+    <app-new-quote @quoteAdded="addQuote"></app-new-quote>
+    <app-quote-grid :quotes='quotes' @quoteDeleted="deleteQuote"></app-quote-grid>
+    <div class="row">
+      <div class="col-sm-12 text-center">
+        <div class="alert alert-info">Click on a quote to delete it.</div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+  import ProgressBar from './components/ProgressBar.vue'
+  import QuoteGrid from './components/QuoteGrid.vue'
+  import NewQuote from './components/NewQuote.vue'
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
+  export default {
+    data(){
+      return {
+        quotes: [
+          'test quote'
+          ],
+        maxQuotes: 10
+      }
+    },
+    methods: {
+      addQuote(event){
+        if (this.quotes.length >= this.maxQuotes) {
+          return alert('Error:  Max size reached! Delete quotes before adding more.')
+        }
+        this.quotes.push(event)
+      },
+      deleteQuote(event){
+        this.quotes.splice(event, 1)
+      }
+    },
+    components: {
+      appQuoteGrid: QuoteGrid,
+      appNewQuote: NewQuote,
+      appProgressBar: ProgressBar
+    }
   }
-}
+
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>
